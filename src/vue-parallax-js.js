@@ -48,7 +48,7 @@ ParallaxJS.prototype = {
 
     const height = mod.absY ? window.innerHeight : el.clientHeight || el.scrollHeight
     const width = mod.absY ? window.innerWidth : el.clientWidth || el.scrollWidth
-      
+
     const cl = this.os.className
     if (typeof cl === 'string') {
       el.className = `${el.className} ${cl}`.trim()
@@ -71,14 +71,14 @@ ParallaxJS.prototype = {
     this.items.forEach(function (item) {
       const t = item.el
       const n = t.currentStyle || window.getComputedStyle(t)
-      
+
       item.height = item.mod.absY ? window.innerHeight : t.clientHeight || t.scrollHeight
       item.width = item.mod.absX ? window.innerWidth : t.clientWidth || t.scrollWidth
 
       if(t.offsetParent !== null)
         item.iOT = t.offsetTop + t.offsetParent.offsetTop - parseInt(n.marginTop)
-      
-      
+
+
     })
   },
   move () {
@@ -102,7 +102,7 @@ ParallaxJS.prototype = {
       const offset = item.iOT * -1 * item.value
       const pos = (((sT + wH) - (elH / 2) - (wH / 2)) * item.value) + offset
       const posY = (((sT + wW) - (elW / 2) - (wW / 2)) * item.value) + offset
-        
+
       window.requestAnimationFrame(() => {
         const cx = item.mod.centerX ? '-50%' : '0px'
         const props = !item.mod.horizontal ? `translate3d(${cx},${pos.toFixed(3)}px,0px)` : `translate3d(${posY.toFixed(3)}px,0px,0px)`
@@ -142,12 +142,10 @@ export default {
       p.move(p)
     }, { passive: true })
 
-    Vue.prototype.$parallaxjs = p
+    Vue.config.globalProperties.$parallaxjs = p
     window.$parallaxjs = p
     Vue.directive('parallax', {
-      bind (el, binding) {
-      },
-      inserted (el, binding) {
+      mounted (el, binding) {
         p.add(el, binding)
         p.move(p)
       },
